@@ -47,7 +47,7 @@ def add_column(column_name, column_type):
         existing_columns = db.session.execute(text("PRAGMA table_info(student)")).fetchall()
         existing_column_names = {col[1] for col in existing_columns}
         if column_name not in existing_column_names:
-            db.session.execute(text(f"ALTER TABLE student ADD COLUMN {column_name} {column_type} DEFAULT 'None'"))
+            db.session.execute(text("ALTER TABLE student ADD COLUMN {} {}".format(column_name, column_type)))
             db.session.commit()
 
 @app.route('/')
@@ -110,7 +110,6 @@ def add_field():
         field_name = request.form['field_name']
         field_type = request.form['field_type']
         add_column(field_name, field_type)
-        flash(f'Field {field_name} added successfully!')
         return redirect(url_for('add_field'))
     return render_template('add_field.html')
 
@@ -144,7 +143,8 @@ def get_student_by_form():
 
     # If searching by name
     elif student_name:
-        students = Student.query.filter(Student.name.ilike(f"{student_name}%")).all()
+
+        students = Student.query.filter(Student.name.ilike("{}".format(student_name))).all()
         if len(students) == 1:
             # Single student found
             student = students[0]
@@ -164,7 +164,7 @@ def get_student_by_form():
 def search_names():
     search_term = request.args.get('name')
     if search_term:
-        students = Student.query.filter(Student.name.ilike(f"{search_term}%")).all()
+        students = Student.query.filter(Student.name.ilike("{}%".format(search_term))).all()
         suggestions = [student.name for student in students]
         return jsonify(suggestions=suggestions)
     return jsonify(suggestions=[])
@@ -202,7 +202,8 @@ def update_student():
                 if column_name != 'id':
                     print(column_name)
                     new_value = request.form.get(column_name, '')
-                    db.session.execute(text(f"UPDATE student SET {column_name} = '{new_value}' WHERE id={student_id}"))
+
+                    db.session.execute(text("UPDATE student SET {} = '{}' WHERE id={}".format(column_name,new_value,student_id)))
                     db.session.commit()
             
             db.session.commit()
@@ -259,4 +260,4 @@ def view_students():
     return render_template('view_students.html', students=students)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
