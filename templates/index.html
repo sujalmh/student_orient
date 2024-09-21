@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orientation Program 2024-25</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">k
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .suggestions-list {
+    border: 1px solid #ccc;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+.suggestions-list li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.suggestions-list li:hover {
+    background-color: #f0f0f0;
+}
+
+.names-row{
+    text-decoration: none;
+    color: #000;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1 id="header-h1">Mangalore Institute of Technology & Engineering</h1>
+        <h2>Orientation Program 2024-25</h2>
+        <img src="{{ url_for('static', filename='images/img.jpg') }}" alt="Orientation Program Image">
+    </header>
+
+    <main class="container">
+        <!-- Search Section -->
+        <section class="search-section">
+            <h2>Search for Student</h2>
+            <form method="GET" action="/get_student">
+                <label for="student_id">Enter Student Candidate ID:</label>
+                <input type="text" id="student_id" name="student_id">
+                <label for="student_name">OR Enter Student Name:</label>
+                <input type="text" id="student_name" name="student_name" onkeyup="searchNames()">
+                <ul id="nameSuggestions" class="suggestions-list" style="display: none;"></ul> <!-- Suggestions will show here -->
+                <button type="submit" class="btn">Search</button>
+            </form>
+        </section>
+
+        <!-- Student Details Section -->
+        <section class="student-details">
+            <h2>Student Details</h2>
+            
+            {% if students %}
+                <h3>Multiple Students Found</h3>
+                <ul class="suggestions-list">
+                    {% for student in students %}
+                        <a class="names-row" href="{{ url_for('get_student_by_form', student_id=student.candidate_id) }}">
+                            <li>
+                                {{ student.name }} (ID: {{ student.candidate_id }})
+                            </li>
+                        </a>
+                    {% endfor %}
+                </ul>
+
+            {% elif student %}
+                <table class="student-table">
+                    <thead>
+                        <tr>
+                            <th>Field</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for field, value in student.items() %}
+                            <tr>
+                                <td>{{ field.capitalize() }}</td>
+                                <td>{{ value }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+            {% elif message %}
+                <p class="message">{{ message }}</p>
+            {% else %}
+                <p>Enter USN or Name to get details.</p>
+            {% endif %}
+
+        </section>
+
+        <!-- Downloads Section -->
+        <section class="downloads">
+            <a href="{{ url_for('static', filename='files/Student handbook and college calendar-2024.pdf') }}" download="Student handbook and college calendar-2024.pdf" class="download-btn">
+                <i class="fa-solid fa-download"></i> Download MITE Student Handbook & College Calendar-2024
+            </a>
+            <a href="{{ url_for('static', filename='files/Student handbook and college calendar-2024.pdf') }}" download="Student handbook and college calendar-2024.pdf" class="download-btn">
+                <i class="fa-solid fa-download"></i> Download Student Induction Program Schedule
+            </a>
+        </section>
+    </main>
+
+    <footer>
+        <p>Mangalore Institute of Technology & Engineering</p>
+    </footer>
+
+    <!-- JavaScript for name search and dropdown -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        function searchNames() {
+            let nameInput = document.getElementById("student_name").value;
+            if (nameInput.length > 0) {
+                $.ajax({
+                    url: "{{ url_for('search_names') }}",
+                    type: "GET",
+                    data: { name: nameInput },
+                    success: function(data) {
+                        let suggestions = data.suggestions;
+                        let suggestionBox = document.getElementById("nameSuggestions");
+                        suggestionBox.innerHTML = "";
+                        if (suggestions.length > 0) {
+                            suggestions.forEach(function(suggestion) {
+                                let listItem = document.createElement("li");
+                                listItem.textContent = suggestion;
+                                listItem.onclick = function() {
+                                    document.getElementById("student_name").value = suggestion;
+                                    suggestionBox.style.display = "none";
+                                };
+                                suggestionBox.appendChild(listItem);
+                            });
+                            suggestionBox.style.display = "block";
+                        } else {
+                            suggestionBox.style.display = "none";
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error in AJAX request:", status, error);
+                    }
+                });
+            } else {
+                document.getElementById("nameSuggestions").style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

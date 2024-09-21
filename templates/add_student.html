@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap">
+
+    <style>
+        /* General Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0ebf8;
+        }
+
+        /* Navigation Bar */
+
+        /* Form Container */
+        .form-container {
+            background-color: #ffffff;
+            padding: 40px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            margin: 50px auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #673ab7;
+        }
+
+        label {
+            font-weight: 500;
+            margin-bottom: 5px;
+            display: block;
+            text-align: left;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #673ab7;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #5e35b1;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <h2>Student Allocation</h2>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/add_student" class="active">Add Student</a></li>
+            <li><a href="/view_students">View Students</a></li>
+            <li><a href="/add_field">Add Field</a></li>
+        </ul>
+    </nav>
+
+    <!-- Form Container -->
+    <div class="form-container">
+        <h1>Add Student</h1>
+        <form method="POST" action="{{ url_for('add_student') }}">
+            <label for="candidate_id">Candidate ID:</label>
+            <input type="text" name="candidate_id" required><br>
+
+            <label for="name">Name:</label>
+            <input type="text" name="name" required><br>
+
+            <label for="section">Section:</label>
+            <input type="text" name="section" required><br>
+
+            <label for="stream">Stream:</label>
+            <input type="text" name="stream"><br>
+
+            <label for="classroom">Classroom:</label>
+            <input type="text" name="classroom"><br>
+
+            <!-- Dynamically added fields -->
+            {% for field in extra_fields %}
+                <label for="{{ field }}">{{ field }}:</label>
+                <input type="text" name="{{ field }}"><br>
+            {% endfor %}
+            
+            <button type="submit">Add Student</button>
+        </form>
+    </div>
+    <div class="form-container">
+        <form method="POST" action="/import_data" enctype="multipart/form-data">
+            <label for="file">Import Excel/CSV File:</label>
+            <input type="file" id="file" name="file" accept=".csv, .xlsx" required>
+            <button type="submit" class="btn">Upload</button>
+        </form>
+    </div>
+</body>
+</html>

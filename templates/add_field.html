@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Field</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap">
+    <style>
+        /* General Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0ebf8;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background-color: #673ab7;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar h2 {
+            color: #ffffff;
+            margin-left: 20px;
+            font-size: 1.5rem;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            display: flex;
+            margin-right: 20px;
+        }
+
+        .navbar ul li {
+            margin-left: 20px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        /* Active class for highlighting current page */
+        .navbar ul li a.active {
+            color: #e0d3f8; /* Highlight active link */
+            font-weight: bold;
+            border-bottom: 2px solid #e0d3f8; /* Add underline to show active state */
+        }
+
+        /* Form Container */
+        .form-container {
+            background-color: #ffffff;
+            padding: 40px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            margin: 50px auto;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #673ab7;
+        }
+
+        label {
+            font-weight: 500;
+            margin-bottom: 5px;
+            display: block;
+            text-align: left;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #673ab7;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #5e35b1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <h2>Student Allocation</h2>
+        <ul>
+            <li><a href="/" class="{% if request.path == '/' %}active{% endif %}">Home</a></li>
+            <li><a href="/add_student" class="{% if request.path == '/add_student' %}active{% endif %}">Add Student</a></li>
+            <li><a href="/get_student" class="{% if request.path == '/get_student' %}active{% endif %}">View Student</a></li>
+            <li><a href="/add_field" class="{% if request.path == '/add_field' %}active{% endif %}">Add Field</a></li>
+        </ul>
+    </nav>
+
+    <!-- Form Container -->
+    <div class="form-container">
+        <h1>Add Field</h1>
+        <form method="POST">
+            <label for="field_name">Field Name:</label>
+            <input type="text" name="field_name" required><br>
+
+            <label for="field_type">Field Type:</label>
+            <input type="text" name="field_type" placeholder="e.g., VARCHAR(255), INTEGER" required><br>
+
+            <button type="submit">Add Field</button>
+        </form>
+    </div>
+
+</body>
+</html>

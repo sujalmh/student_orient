@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Student</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap">
+    <style>
+        /* General Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f0ebf8;
+            padding: 0 20px;
+        }
+
+        header {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px 0;
+            border-bottom: 1px solid #e0e0e0;
+            border-top: 10px solid #673ab7;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: #202124;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #673ab7;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #5e35b1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #ffffff;
+            border-top: 1px solid #e0e0e0;
+            margin-top: 20px;
+        }
+
+        footer p {
+            font-size: 0.875rem;
+            color: #606060;
+        }
+
+        .back {
+            color: #2c2b2b;
+            text-decoration: none;
+            display: inline;
+            z-index: 1;
+        }
+
+    </style>
+</head>
+<body>
+    <div><a href="{{ url_for('index') }}" class="back">< Back</a></div>
+    <header>
+        <h1>Edit Student Details</h1>
+    </header>
+
+    <div class="container">
+        <form action="{{ url_for('update_student') }}" method="post">
+            <input type="hidden" name="student_id" value="{{ student['id'] }}">
+            {% for field, value in student.items() %}
+                {% if field != 'id' %}
+                    <label for="{{ field }}">{{ field }}:</label>
+                    <input type="text" id="{{ field }}" name="{{ field }}" value="{{ value }}">
+                {% endif %}
+            {% endfor %}
+            <button type="submit">Update</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Student Management System</p>
+    </footer>
+</body>
+</html>

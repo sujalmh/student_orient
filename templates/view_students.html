@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View All Students</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <h2>Student Allocation</h2>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/add_student" >Add Student</a></li>
+            <li><a href="/view_students" class="active">View Students</a></li>
+            <li><a href="/add_field">Add Field</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>All Students</h1>
+    </header>
+    
+    <main class="container">
+        <h2>Students Sorted by Classroom</h2>
+        
+        {% if students %}
+            <table class="student-table">
+                <thead>
+                    <tr>
+                        <th>Candidate ID</th>
+                        <th>Name</th>
+                        <th>Stream</th>
+                        <th>Section</th>
+                        <th>Classroom</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                        <tr>
+                            <td>{{ student.candidate_id }}</td>
+                            <td>{{ student.name }}</td>
+                            <td>{{ student.stream }}</td>
+                            <td>{{ student.section }}</td>
+                            <td>{{ student.classroom }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No students found.</p>
+        {% endif %}
+    </main>
+
+    <footer>
+        <p>Mangalore Institute of Technology & Engineering</p>
+    </footer>
+</body>
+</html>
