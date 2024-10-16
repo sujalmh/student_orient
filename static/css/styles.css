@@ -144,11 +144,17 @@ button.btn:hover {
     align-items: center;
     gap: 20px;
     justify-content: center;
+    vertical-align: middle;
 }
 
 .download-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  
     width: 300px;
-    min-height: 120px;
+    min-height: 250px;
     padding: 20px;
     font-size: 1rem;
     background-color: #673ab7;
@@ -161,7 +167,6 @@ button.btn:hover {
     text-decoration: none;
     margin: auto;
     justify-content: center;
-    vertical-align: middle;
     align-items: center;
 }
 

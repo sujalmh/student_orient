@@ -38,22 +38,22 @@
     <header>
         <h1 id="header-h1">Mangalore Institute of Technology & Engineering</h1>
         <h2>Orientation Program 2024-25</h2>
-        <img src="{{ url_for('static', filename='images/img.jpg') }}" alt="Orientation Program Image">
+        <img src="https://i.ibb.co/TMYyXsv/img.jpg" alt="Orientation Program Image">
     </header>
 
     <main class="container">
         <!-- Search Section -->
         <section class="search-section">
             <h2>Search for Student</h2>
-            <form method="GET" action="/get_student">
+            <form method="GET" action="/get_student" id="studentForm">
                 <label for="student_id">Enter Student Candidate ID:</label>
                 <input type="text" id="student_id" name="student_id">
                 <label for="student_name">OR Enter Student Name:</label>
                 <input type="text" id="student_name" name="student_name" onkeyup="searchNames()">
-                <ul id="nameSuggestions" class="suggestions-list" style="display: none;"></ul> <!-- Suggestions will show here -->
+                <ul id="nameSuggestions" class="suggestions-list" style="display: none;"></ul>
                 <button type="submit" class="btn">Search</button>
             </form>
-        </section>
+                    </section>
 
         <!-- Student Details Section -->
         <section class="student-details">
@@ -120,7 +120,7 @@
     <script>
         function searchNames() {
             let nameInput = document.getElementById("student_name").value;
-            if (nameInput.length > 0) {
+            if (nameInput.length > 3) {
                 $.ajax({
                     url: "{{ url_for('search_names') }}",
                     type: "GET",
@@ -135,7 +135,7 @@
                                 listItem.textContent = suggestion;
                                 listItem.onclick = function() {
                                     document.getElementById("student_name").value = suggestion;
-                                    suggestionBox.style.display = "none";
+                                    document.getElementById("studentForm").submit(); // Automatically submit the form
                                 };
                                 suggestionBox.appendChild(listItem);
                             });
