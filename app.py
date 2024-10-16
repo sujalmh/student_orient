@@ -143,8 +143,7 @@ def get_student_by_form():
 
     # If searching by name
     elif student_name:
-
-        students = Student.query.filter(Student.name.ilike("{}".format(student_name))).all()
+        students = Student.query.filter(Student.name.contains("{}".format(student_name))).all()
         if len(students) == 1:
             # Single student found
             student = students[0]
@@ -260,4 +259,4 @@ def view_students():
     return render_template('view_students.html', students=students)
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)
